@@ -60,3 +60,67 @@
 // =============================================================================
 
 
+// =============================================================================
+// PROGRAMMING FUNDAMENTALS — Assignment 6
+// =============================================================================
+
+const readlineSync = require('readline-sync');
+
+// =============================================================================
+// PART A — Print a Single Multiplication Table
+// =============================================================================
+
+function singleTable(number) {
+    console.log("\nMultiplication Table for " + number + ":");
+
+    for (let i = 1; i <= 12; i++) {
+        console.log(number + "  x  " + i + "  =  " + (number * i));
+    }
+}
+
+// =============================================================================
+// PART B — Print Tables from 1 to N
+// =============================================================================
+
+function multipleTables(n) {
+    for (let number = 1; number <= n; number++) {
+        console.log("\nMultiplication Table for " + number + ":");
+
+        for (let i = 1; i <= 12; i++) {
+            console.log(number + "  x  " + i + "  =  " + (number * i));
+        }
+
+        if (number < n) {
+            console.log("---------------------------");
+        }
+    }
+}
+
+// =============================================================================
+// MAIN FUNCTION
+// =============================================================================
+
+function main() {
+
+    // Part A
+    const number = readlineSync.questionInt(
+        "Enter a number for the multiplication table: "
+    );
+
+    singleTable(number);
+
+    // Part B
+    const n = readlineSync.questionInt(
+        "\nEnter N for tables from 1 to N: "
+    );
+
+    if (n <= 0) {
+        console.log("Error: N must be a positive integer.");
+        return;
+    }
+
+    multipleTables(n);
+}
+
+// Run the program
+main();

@@ -70,3 +70,251 @@
 
 const readlineSync = require('readline-sync');
 
+// =============================================================================
+// PROGRAMMING FUNDAMENTALS — Assignment 4
+// =============================================================================
+//
+// TASK: Matrix Operations
+// =============================================================================
+
+// -----------------------------------------------------------------------------
+// Function to read a matrix
+// -----------------------------------------------------------------------------
+function readMatrix(rows, columns) {
+    let matrix = [];
+
+    for (let i = 0; i < rows; i++) {
+        let row;
+
+        while (true) {
+            row = readlineSync.question(
+                "Enter row " + (i + 1) + ": "
+            );
+
+            let values = row.trim().split(/\s+/).map(Number);
+
+            if (values.length === columns && values.every(Number.isFinite)) {
+                matrix.push(values);
+                break;
+            }
+
+            console.log(
+                "Error: Please enter exactly " +
+                columns +
+                " numbers."
+            );
+        }
+    }
+
+    return matrix;
+}
+
+// -----------------------------------------------------------------------------
+// Part A — Transpose a Matrix
+// -----------------------------------------------------------------------------
+function transposeMatrix(matrix) {
+    let rows = matrix.length;
+    let columns = matrix[0].length;
+    let transposed = [];
+
+    for (let j = 0; j < columns; j++) {
+        let newRow = [];
+
+        for (let i = 0; i < rows; i++) {
+            newRow.push(matrix[i][j]);
+        }
+
+        transposed.push(newRow);
+    }
+
+    return transposed;
+}
+
+// -----------------------------------------------------------------------------
+// Part B — Add Two Matrices
+// -----------------------------------------------------------------------------
+function addMatrices(matrixA, matrixB) {
+    let rows = matrixA.length;
+    let columns = matrixA[0].length;
+    let result = [];
+
+    for (let i = 0; i < rows; i++) {
+        let row = [];
+
+        for (let j = 0; j < columns; j++) {
+            row.push(matrixA[i][j] + matrixB[i][j]);
+        }
+
+        result.push(row);
+    }
+
+    return result;
+}
+
+// -----------------------------------------------------------------------------
+// Part C — Multiply Two Matrices
+// -----------------------------------------------------------------------------
+function multiplyMatrices(matrixA, matrixB) {
+    let rowsA = matrixA.length;
+    let columnsA = matrixA[0].length;
+    let columnsB = matrixB[0].length;
+
+    let result = [];
+
+    for (let i = 0; i < rowsA; i++) {
+        let row = [];
+
+        for (let j = 0; j < columnsB; j++) {
+            let sum = 0;
+
+            for (let k = 0; k < columnsA; k++) {
+                sum = sum + matrixA[i][k] * matrixB[k][j];
+            }
+
+            row.push(sum);
+        }
+
+        result.push(row);
+    }
+
+    return result;
+}
+
+// -----------------------------------------------------------------------------
+// Function to display a matrix
+// -----------------------------------------------------------------------------
+function displayMatrix(matrix) {
+    for (let i = 0; i < matrix.length; i++) {
+        console.log(matrix[i].join("\t"));
+    }
+}
+
+// -----------------------------------------------------------------------------
+// Main function
+// -----------------------------------------------------------------------------
+function main() {
+
+    // =========================================================================
+    // PART A — TRANSPOSE
+    // =========================================================================
+
+    console.log("\n==============================");
+    console.log("     PART A - TRANSPOSE");
+    console.log("==============================");
+
+    let rows = readlineSync.questionInt("Enter number of rows: ");
+    let columns = readlineSync.questionInt("Enter number of columns: ");
+
+    if (rows <= 0 || columns <= 0) {
+        console.log("Error: Rows and columns must be positive integers.");
+        return;
+    }
+
+    let matrix = readMatrix(rows, columns);
+
+    console.log("\nOriginal Matrix:");
+    displayMatrix(matrix);
+
+    let transposed = transposeMatrix(matrix);
+
+    console.log("\nTransposed Matrix:");
+    displayMatrix(transposed);
+
+
+    // =========================================================================
+    // PART B — ADD TWO MATRICES
+    // =========================================================================
+
+    console.log("\n==============================");
+    console.log("     PART B - MATRIX ADDITION");
+    console.log("==============================");
+
+    let addRows = readlineSync.questionInt("Enter number of rows: ");
+    let addColumns = readlineSync.questionInt("Enter number of columns: ");
+
+    if (addRows <= 0 || addColumns <= 0) {
+        console.log("Error: Rows and columns must be positive integers.");
+        return;
+    }
+
+    console.log("\nEnter values for Matrix A:");
+    let matrixA = readMatrix(addRows, addColumns);
+
+    console.log("\nEnter values for Matrix B:");
+    let matrixB = readMatrix(addRows, addColumns);
+
+    let additionResult = addMatrices(matrixA, matrixB);
+
+    console.log("\nMatrix A:");
+    displayMatrix(matrixA);
+
+    console.log("\nMatrix B:");
+    displayMatrix(matrixB);
+
+    console.log("\nA + B:");
+    displayMatrix(additionResult);
+
+
+    // =========================================================================
+    // PART C — MATRIX MULTIPLICATION
+    // =========================================================================
+
+    console.log("\n==============================");
+    console.log("  PART C - MATRIX MULTIPLICATION");
+    console.log("==============================");
+
+    let rowsA = readlineSync.questionInt(
+        "Enter number of rows for Matrix A: "
+    );
+
+    let columnsA = readlineSync.questionInt(
+        "Enter number of columns for Matrix A: "
+    );
+
+    if (rowsA <= 0 || columnsA <= 0) {
+        console.log("Error: Rows and columns must be positive integers.");
+        return;
+    }
+
+    console.log("\nEnter values for Matrix A:");
+    matrixA = readMatrix(rowsA, columnsA);
+
+    let rowsB = readlineSync.questionInt(
+        "Enter number of rows for Matrix B: "
+    );
+
+    let columnsB = readlineSync.questionInt(
+        "Enter number of columns for Matrix B: "
+    );
+
+    if (rowsB <= 0 || columnsB <= 0) {
+        console.log("Error: Rows and columns must be positive integers.");
+        return;
+    }
+
+    // Check multiplication condition
+    if (columnsA !== rowsB) {
+        console.log(
+            "Error: The number of columns in Matrix A must equal " +
+            "the number of rows in Matrix B."
+        );
+        return;
+    }
+
+    console.log("\nEnter values for Matrix B:");
+    matrixB = readMatrix(rowsB, columnsB);
+
+    let multiplicationResult = multiplyMatrices(matrixA, matrixB);
+
+    console.log("\nMatrix A:");
+    displayMatrix(matrixA);
+
+    console.log("\nMatrix B:");
+    displayMatrix(matrixB);
+
+    console.log("\nA x B:");
+    displayMatrix(multiplicationResult);
+}
+
+// Run the program
+main();

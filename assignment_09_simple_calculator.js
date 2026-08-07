@@ -75,3 +75,147 @@
 // =============================================================================
 
 
+// =============================================================================
+// PROGRAMMING FUNDAMENTALS — Assignment 9
+// =============================================================================
+// File: assignment_09_simple_calculator.js
+
+const readline = require('readline-sync');
+
+// -----------------------------------------------------------------------------
+// ARITHMETIC OPERATION FUNCTIONS
+// -----------------------------------------------------------------------------
+
+/**
+ * Adds two numbers.
+ */
+function add(a, b) {
+  return a + b;
+}
+
+/**
+ * Subtracts the second number from the first.
+ */
+function subtract(a, b) {
+  return a - b;
+}
+
+/**
+ * Multiplies two numbers.
+ */
+function multiply(a, b) {
+  return a * b;
+}
+
+/**
+ * Divides the first number by the second.
+ * Handles division by zero.
+ */
+function divide(a, b) {
+  if (b === 0) {
+    return "Error: Cannot divide by zero.";
+  }
+  return a / b;
+}
+
+/**
+ * Calculates the remainder of division of the first number by the second.
+ * Handles modulus by zero.
+ */
+function modulus(a, b) {
+  if (b === 0) {
+    return "Error: Cannot divide by zero.";
+  }
+  return a % b;
+}
+
+/**
+ * Raises the first number to the power of the second number.
+ */
+function exponentiate(a, b) {
+  return a ** b;
+}
+
+// -----------------------------------------------------------------------------
+// MAIN CALCULATOR APP
+// -----------------------------------------------------------------------------
+
+function runCalculator() {
+  let keepRunning = true;
+
+  while (keepRunning) {
+    // 1. Display Menu Header
+    console.log("\n============================");
+    console.log("     SIMPLE CALCULATOR");
+    console.log("============================");
+    console.log("1. Addition");
+    console.log("2. Subtraction");
+    console.log("3. Multiplication");
+    console.log("4. Division");
+    console.log("5. Modulus");
+    console.log("6. Exponentiation");
+    console.log("7. Quit");
+
+    // 2. Prompt for Menu Choice
+    const choice = readline.question("Select an operation (1-7): ").trim();
+
+    // 3. Handle Quit Option
+    if (choice === '7') {
+      console.log("Goodbye!");
+      keepRunning = false;
+      break;
+    }
+
+    // 4. Validate Invalid Choices
+    if (!['1', '2', '3', '4', '5', '6'].includes(choice)) {
+      console.log("Invalid selection. Please choose a option between 1 and 7.");
+      continue;
+    }
+
+    // 5. Prompt for Numbers
+    const num1 = readline.questionFloat("Enter first number : ");
+    const num2 = readline.questionFloat("Enter second number: ");
+
+    let result;
+    let symbol;
+
+    // 6. Execute Corresponding Function
+    switch (choice) {
+      case '1':
+        result = add(num1, num2);
+        symbol = '+';
+        break;
+      case '2':
+        result = subtract(num1, num2);
+        symbol = '-';
+        break;
+      case '3':
+        result = multiply(num1, num2);
+        symbol = '*';
+        break;
+      case '4':
+        result = divide(num1, num2);
+        symbol = '/';
+        break;
+      case '5':
+        result = modulus(num1, num2);
+        symbol = '%';
+        break;
+      case '6':
+        result = exponentiate(num1, num2);
+        symbol = '**';
+        break;
+    }
+
+    // 7. Output Result or Error Message
+    if (typeof result === 'string') {
+      // Handles zero-division error string returned by divide/modulus
+      console.log(result);
+    } else {
+      console.log(`Result: ${num1} ${symbol} ${num2} = ${result.toFixed(2)}`);
+    }
+  }
+}
+
+// Execute program
+runCalculator();
